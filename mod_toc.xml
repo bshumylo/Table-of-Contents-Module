@@ -6,7 +6,7 @@
     <creationDate>2026-08-12</creationDate>
     <copyright>(C) 2026 Bohdan Shumylo</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-    <version>1.0.0</version>
+    <version>1.0.3</version>
     <description>MOD_TOC_XML_DESCRIPTION</description>
     <changelogurl>https://raw.githubusercontent.com/bshumylo/Table-of-Contents-Module/main/changelog.xml</changelogurl>
     <namespace path="src">Bshumylo\Module\Toc</namespace>
@@ -144,7 +144,8 @@
                     name="bg_color"
                     type="color"
                     label="MOD_TOC_FIELD_BG_COLOR_LABEL"
-                    default="#f8f9fa"
+                    description="MOD_TOC_FIELD_BG_COLOR_DESC"
+                    default=""
                     format="hex"
                     validate="color"
                     filter="string"
@@ -153,7 +154,8 @@
                     name="border_color"
                     type="color"
                     label="MOD_TOC_FIELD_BORDER_COLOR_LABEL"
-                    default="#dee2e6"
+                    description="MOD_TOC_FIELD_BORDER_COLOR_DESC"
+                    default=""
                     format="hex"
                     validate="color"
                     filter="string"
