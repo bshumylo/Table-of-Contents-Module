@@ -46,7 +46,6 @@ final class TocHelperTest extends TestCase
 
         $this->assertSame('mod-toc-5', $config['id']);
         $this->assertSame(['h2', 'h3', 'h4'], $config['levels']);
-        $this->assertSame('right', $config['position']);
         $this->assertSame(2, $config['minItems']);
         $this->assertSame(TocHelper::DEFAULT_SELECTOR, $config['selector']);
     }
@@ -73,9 +72,13 @@ final class TocHelperTest extends TestCase
         $this->assertSame(['h2', 'h3', 'h4'], $this->config(['levels' => ['nope']])['levels']);
     }
 
-    public function testUnknownPositionFallsBackToRight(): void
+    /**
+     * Placement is the template position's job since 1.1.0, so a value left
+     * over in the saved params must not travel into the script options.
+     */
+    public function testPositionParamIsNoLongerPartOfTheConfig(): void
     {
-        $this->assertSame('right', $this->config(['position' => 'bogus'])['position']);
+        $this->assertArrayNotHasKey('position', $this->config(['position' => 'right']));
     }
 
     public function testMinItemsClampedToAtLeastOne(): void
@@ -101,16 +104,24 @@ final class TocHelperTest extends TestCase
     public function testValidStyleValuesArePassedThrough(): void
     {
         $presentation = $this->presentation([
-            'width'        => '320px',
             'font_size'    => '0.9rem',
             'bg_color'     => '#f8f9fa',
             'border_color' => '#DEE2E6',
         ]);
 
         $this->assertSame(
-            '--toc-width:320px;--toc-font-size:0.9rem;--toc-bg:#f8f9fa;--toc-border:#DEE2E6',
+            '--toc-font-size:0.9rem;--toc-bg:#f8f9fa;--toc-border:#DEE2E6',
             $presentation['style']
         );
+    }
+
+    /**
+     * The module fills its template position, so a width left over in the
+     * saved params must not reach the style attribute any more.
+     */
+    public function testWidthParamIsIgnored(): void
+    {
+        $this->assertSame('', $this->presentation(['width' => '320px'])['style']);
     }
 
     public function testMultipleCustomClassesAreKept(): void
@@ -125,7 +136,7 @@ final class TocHelperTest extends TestCase
     #[DataProvider('hostileLengthProvider')]
     public function testHostileLengthValuesAreDropped(string $value): void
     {
-        $presentation = $this->presentation(['width' => $value, 'font_size' => $value]);
+        $presentation = $this->presentation(['font_size' => $value]);
 
         $this->assertSame('', $presentation['style']);
     }
@@ -254,7 +265,7 @@ final class TocHelperTest extends TestCase
     {
         $config = $this->config([
             'content_selector' => '</script><script>alert(1)</script>',
-            'position'         => '"><script>alert(1)</script>',
+            'levels'           => ['h2', '"><script>alert(1)</script>'],
         ]);
 
         $json = json_encode($config, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
@@ -262,7 +273,7 @@ final class TocHelperTest extends TestCase
         $this->assertIsString($json);
         $this->assertStringNotContainsString('<', $json);
         $this->assertStringNotContainsString('>', $json);
-        $this->assertSame('right', $config['position']);
+        $this->assertSame(['h2'], $config['levels']);
         $this->assertSame(json_decode((string) $json, true), $config);
     }
 }

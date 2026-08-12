@@ -4,6 +4,21 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-08-12
+
+### Changed
+
+- **Placement is now Joomla's own module position.** The *Position* parameter (top of the article / floating left / floating right) is gone, along with the script that moved the module next to the article body: it duplicated the module Position selector every Joomla module already has, and the DOM move was the source of the wrapper and title problems fixed in 1.0.3. The module renders where the template renders it; assign it to the position you want it in.
+- **The box no longer carries a width.** The fixed *Width* parameter (`280px`) is gone; the module fills the position it sits in (`width: 100%`, plus `flex: 1 1 auto` and `min-width: 0` so it also behaves as a flex or grid item inside a builder panel or a card grid). Size it from the position, the template, or the module's Custom CSS field.
+
+### Removed
+
+- `position` and `width` module parameters, the `--toc-width` custom property, the `mod-toc--top` / `mod-toc--left` / `mod-toc--right` and `mod-toc-holder*` CSS classes, and their language strings. Values already saved for existing modules are ignored, so nothing has to be cleaned up before updating.
+
+### Note
+
+- Modules that relied on the floating placement now appear in their assigned template position instead. To keep a table of contents beside the article text, assign the module to a sidebar position of the template.
+
 ## [1.0.3] - 2026-08-12
 
 ### Fixed

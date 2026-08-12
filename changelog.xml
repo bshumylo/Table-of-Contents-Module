@@ -3,6 +3,22 @@
     <changelog>
         <element>mod_toc</element>
         <type>module</type>
+        <version>1.1.0</version>
+        <change>
+            <item>Placement is now the module position you assign in Joomla. The Position parameter (top of the article, floating left, floating right) has been removed together with the script that moved the module next to the article body: it duplicated the module position selector every Joomla module already has. The module renders where the template renders it.</item>
+            <item>The box no longer has a width of its own. The fixed Width parameter has been removed; the module fills the position it sits in and also behaves correctly as a flex or grid item inside a builder panel or a card grid. Set the size from the position, the template, or the module's Custom CSS field.</item>
+        </change>
+        <remove>
+            <item>The "position" and "width" parameters, the "--toc-width" custom property and the placement CSS classes. Values already saved for existing modules are ignored, so nothing has to be cleaned up before updating.</item>
+        </remove>
+        <note>
+            <item>Modules that relied on the floating placement now appear in their assigned template position. To keep the table of contents beside the article text, assign the module to a sidebar position of the template.</item>
+            <item>Requires Joomla 6.0 or later and PHP 8.3 or later.</item>
+        </note>
+    </changelog>
+    <changelog>
+        <element>mod_toc</element>
+        <type>module</type>
         <version>1.0.3</version>
         <fix>
             <item>The box was unreadable on a dark template: the background colour defaulted to a near white value while the text and link colours are inherited from the template, so light text landed on a light box. Background and border colours now default to empty, which makes the box take the template's own background and gives it a neutral grey border that stays visible either way. Existing modules keep whatever colours were saved for them; clear the two colour fields to pick up the new behaviour.</item>

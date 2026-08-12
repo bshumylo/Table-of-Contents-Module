@@ -10,7 +10,6 @@
     --toc-border: rgba(128, 128, 128, 0.4);
     --toc-text: inherit;
     --toc-link: inherit;
-    --toc-width: 280px;
     --toc-font-size: 0.9rem;
 
     background: var(--toc-bg);
@@ -20,74 +19,20 @@
     font-size: var(--toc-font-size);
     padding: 0.75em 1em;
     box-sizing: border-box;
-}
 
-.mod-toc--top {
+    /*
+     * The module fills whatever the template position gives it and never
+     * fixes its own width: placement and sizing belong to the position, not
+     * to the module. `flex: 1 1 auto` and `min-width: 0` keep it sane when
+     * the position is a flex or grid container (YOOtheme Pro panels, a
+     * Cassiopeia card grid), where a block with an intrinsic width would
+     * either overflow the track or refuse to shrink.
+     */
     display: block;
     width: 100%;
-    margin: 0 0 1.5em;
-}
-
-.mod-toc--left,
-.mod-toc--right {
-    width: var(--toc-width);
     max-width: 100%;
-    margin-bottom: 1em;
-    position: sticky;
-    top: 1em;
-}
-
-.mod-toc--left {
-    float: left;
-    margin-right: 1.5em;
-}
-
-.mod-toc--right {
-    float: right;
-    margin-left: 1.5em;
-}
-
-/*
- * A template chrome wrapper that travelled with the module (Cassiopeia's
- * card, YOOtheme's module panel). It carries the placement so the article
- * text wraps around it; the module inside it just fills it.
- */
-.mod-toc-holder {
-    --toc-width: 280px;
-
-    box-sizing: border-box;
-}
-
-.mod-toc-holder--top {
-    display: block;
-    width: 100%;
-    margin: 0 0 1.5em;
-}
-
-.mod-toc-holder--left,
-.mod-toc-holder--right {
-    width: var(--toc-width);
-    max-width: 100%;
-    margin-bottom: 1em;
-    position: sticky;
-    top: 1em;
-}
-
-.mod-toc-holder--left {
-    float: left;
-    margin-right: 1.5em;
-}
-
-.mod-toc-holder--right {
-    float: right;
-    margin-left: 1.5em;
-}
-
-.mod-toc--in-holder {
-    float: none;
-    width: auto;
-    margin: 0;
-    position: static;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .mod-toc__title {
@@ -143,22 +88,4 @@ ol.mod-toc__list {
 .mod-toc__link:hover,
 .mod-toc__link:focus {
     text-decoration: underline;
-}
-
-@media (max-width: 782px) {
-    .mod-toc--left,
-    .mod-toc--right,
-    .mod-toc-holder--left,
-    .mod-toc-holder--right {
-        float: none;
-        width: 100%;
-        position: static;
-        margin-left: 0;
-        margin-right: 0;
-        margin-bottom: 1.5em;
-    }
-
-    .mod-toc--in-holder {
-        margin: 0;
-    }
 }
