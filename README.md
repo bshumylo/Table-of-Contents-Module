@@ -10,7 +10,7 @@ A native Joomla! 6 site module that automatically builds a **table of contents**
 - Configurable heading levels (`H2`–`H6`) and a minimum number of headings below which the module hides itself completely — including its chrome.
 - Rendered in the template position it is assigned to, which it fills — placement is Joomla's own module position, and the box carries no width of its own, so it fits a sidebar, a builder column or a flex container alike.
 - Optional numbered list, collapsible box (optionally collapsed on load), and smooth scrolling with a configurable offset for sticky site headers.
-- Appearance options: background, border, text and link colours, font size, extra CSS class, and a per-instance Custom CSS field.
+- Styled by the template: colours and font size are inherited, not configured, so the box fits a light and a dark design as it is. An extra CSS class and a per-instance Custom CSS field are there when you want something else.
 - Adjustable article-content CSS selector for templates that do not use standard Joomla article markup.
 - No external dependencies and no remote requests — plain Joomla web assets (DI service provider, module dispatcher, overridable layout).
 - Ships with `en-GB` and `uk-UA` translations.
@@ -45,15 +45,24 @@ The module renders only on `com_content` article views; on any other page it pro
 
 ### Appearance
 
+Colours and font size are not module parameters: the box takes the background, the text colour, the link colour and the font size of the template around it, so it matches a light and a dark design without being configured. Only the border falls back to a neutral grey, so the box stays outlined either way.
+
 | Option | Default | Description |
 | --- | --- | --- |
-| Background colour | *(empty)* | Box background; the template's own background when empty. |
-| Border colour | *(empty)* | Box border; a neutral grey when empty. |
-| Text colour | *(empty)* | Inherited from the template when empty. |
-| Link colour | *(empty)* | Inherited from the template when empty. |
-| Font size | *(empty)* | e.g. `14px` or `0.9rem`; inherited when empty. |
 | Custom CSS class | *(empty)* | Extra class on the wrapper. |
 | Custom CSS | *(empty)* | Raw declarations applied to this module instance only — no selector and no braces needed. |
+
+To restyle a single module, set the module's own custom properties in **Custom CSS** (the field's placeholder shows the same list):
+
+```css
+--toc-bg: #f8f9fa;
+--toc-border: #dee2e6;
+--toc-text: #212529;
+--toc-link: #0d6efd;
+--toc-font-size: 0.9rem;
+```
+
+Any other declaration works too — `border-radius: 12px;`, `padding: 1.5em;` and so on. The declarations are scoped to this module instance (`#mod-toc-<id>`), so nothing leaks into the rest of the page; selectors, braces and at-rules are stripped on render, see the security note below. For site-wide styling use the template's own CSS and target `.mod-toc`.
 
 ### Advanced
 

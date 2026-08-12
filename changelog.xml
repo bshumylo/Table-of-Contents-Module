@@ -3,6 +3,22 @@
     <changelog>
         <element>mod_toc</element>
         <type>module</type>
+        <version>1.2.0</version>
+        <change>
+            <item>The appearance now follows the template. The background, border, text and link colour parameters and the font size parameter have been removed: the box inherits those from the template around it, so it fits a light and a dark design without being configured, and only the border keeps a neutral grey fallback. The module no longer writes an inline style attribute.</item>
+            <item>Custom CSS is the documented way to restyle a single module. The field description lists the custom properties the module reads (--toc-bg, --toc-border, --toc-text, --toc-link, --toc-font-size) and the field itself shows them as a placeholder, with a note at the top of the Appearance tab explaining where the styling comes from.</item>
+        </change>
+        <remove>
+            <item>The "bg_color", "border_color", "text_color", "link_color" and "font_size" parameters and the inline style built from them. Values already saved for existing modules are ignored, so nothing has to be cleaned up before updating.</item>
+        </remove>
+        <note>
+            <item>A module whose colours were set through the removed pickers now takes the colours of the template. To keep the previous look, put the matching custom properties into the Custom CSS field.</item>
+            <item>Requires Joomla 6.0 or later and PHP 8.3 or later.</item>
+        </note>
+    </changelog>
+    <changelog>
+        <element>mod_toc</element>
+        <type>module</type>
         <version>1.1.0</version>
         <change>
             <item>Placement is now the module position you assign in Joomla. The Position parameter (top of the article, floating left, floating right) has been removed together with the script that moved the module next to the article body: it duplicated the module position selector every Joomla module already has. The module renders where the template renders it.</item>
