@@ -1,0 +1,17 @@
+# Build artifacts
+/dist/
+*.zip
+
+# IDE / OS / tooling
+.idea/
+.vscode/
+.claude/
+.DS_Store
+Thumbs.db
+
+# Live test output
+/docker-logs/
+
+# Dependencies (none required, just in case)
+/vendor/
+/node_modules/

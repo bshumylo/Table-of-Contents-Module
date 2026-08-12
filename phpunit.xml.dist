@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="tests/bootstrap.php"
+         colors="false"
+         cacheResult="false"
+         failOnWarning="true"
+         failOnRisky="true">
+    <testsuites>
+        <testsuite name="mod_toc">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

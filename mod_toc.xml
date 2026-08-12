@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Target: Joomla 6.1+ -->
+<extension type="module" client="site" method="upgrade">
+    <name>MOD_TOC</name>
+    <author>Bohdan Shumylo</author>
+    <creationDate>2026-08-12</creationDate>
+    <copyright>(C) 2026 Bohdan Shumylo</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <version>1.0.0</version>
+    <description>MOD_TOC_XML_DESCRIPTION</description>
+    <changelogurl>https://raw.githubusercontent.com/bshumylo/Table-of-Contents-Module/main/changelog.xml</changelogurl>
+    <namespace path="src">Bshumylo\Module\Toc</namespace>
+    <files>
+        <folder module="mod_toc">services</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+        <folder>language</folder>
+    </files>
+    <media destination="mod_toc" folder="media">
+        <filename>joomla.asset.json</filename>
+        <folder>js</folder>
+        <folder>css</folder>
+    </media>
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="MOD_TOC_FIELDSET_BASIC">
+                <field
+                    name="title"
+                    type="text"
+                    label="MOD_TOC_FIELD_TITLE_LABEL"
+                    description="MOD_TOC_FIELD_TITLE_DESC"
+                    default=""
+                    filter="string"
+                />
+                <field
+                    name="position"
+                    type="list"
+                    label="MOD_TOC_FIELD_POSITION_LABEL"
+                    description="MOD_TOC_FIELD_POSITION_DESC"
+                    default="right"
+                    validate="options"
+                >
+                    <option value="top">MOD_TOC_FIELD_POSITION_TOP</option>
+                    <option value="left">MOD_TOC_FIELD_POSITION_LEFT</option>
+                    <option value="right">MOD_TOC_FIELD_POSITION_RIGHT</option>
+                </field>
+                <field
+                    name="levels"
+                    type="checkboxes"
+                    label="MOD_TOC_FIELD_LEVELS_LABEL"
+                    description="MOD_TOC_FIELD_LEVELS_DESC"
+                    checkedOptions="h2,h3,h4"
+                    validate="options"
+                >
+                    <option value="h2">H2</option>
+                    <option value="h3">H3</option>
+                    <option value="h4">H4</option>
+                    <option value="h5">H5</option>
+                    <option value="h6">H6</option>
+                </field>
+                <field
+                    name="min_items"
+                    type="number"
+                    label="MOD_TOC_FIELD_MIN_ITEMS_LABEL"
+                    description="MOD_TOC_FIELD_MIN_ITEMS_DESC"
+                    default="2"
+                    min="1"
+                    max="20"
+                    filter="integer"
+                    validate="number"
+                />
+                <field
+                    name="numbered"
+                    type="radio"
+                    label="MOD_TOC_FIELD_NUMBERED_LABEL"
+                    layout="joomla.form.field.radio.switcher"
+                    default="0"
+                    filter="integer"
+                    validate="options"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="collapsible"
+                    type="radio"
+                    label="MOD_TOC_FIELD_COLLAPSIBLE_LABEL"
+                    layout="joomla.form.field.radio.switcher"
+                    default="1"
+                    filter="integer"
+                    validate="options"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="collapsed"
+                    type="radio"
+                    label="MOD_TOC_FIELD_COLLAPSED_LABEL"
+                    layout="joomla.form.field.radio.switcher"
+                    default="0"
+                    filter="integer"
+                    validate="options"
+                    showon="collapsible:1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="smooth_scroll"
+                    type="radio"
+                    label="MOD_TOC_FIELD_SMOOTH_SCROLL_LABEL"
+                    layout="joomla.form.field.radio.switcher"
+                    default="1"
+                    filter="integer"
+                    validate="options"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="scroll_offset"
+                    type="number"
+                    label="MOD_TOC_FIELD_SCROLL_OFFSET_LABEL"
+                    description="MOD_TOC_FIELD_SCROLL_OFFSET_DESC"
+                    default="20"
+                    min="0"
+                    max="500"
+                    filter="integer"
+                    validate="number"
+                />
+            </fieldset>
+            <fieldset name="appearance" label="MOD_TOC_FIELDSET_APPEARANCE">
+                <field
+                    name="width"
+                    type="text"
+                    label="MOD_TOC_FIELD_WIDTH_LABEL"
+                    description="MOD_TOC_FIELD_WIDTH_DESC"
+                    default="280px"
+                    filter="string"
+                    hint="280px"
+                />
+                <field
+                    name="bg_color"
+                    type="color"
+                    label="MOD_TOC_FIELD_BG_COLOR_LABEL"
+                    default="#f8f9fa"
+                    format="hex"
+                    validate="color"
+                    filter="string"
+                />
+                <field
+                    name="border_color"
+                    type="color"
+                    label="MOD_TOC_FIELD_BORDER_COLOR_LABEL"
+                    default="#dee2e6"
+                    format="hex"
+                    validate="color"
+                    filter="string"
+                />
+                <field
+                    name="text_color"
+                    type="color"
+                    label="MOD_TOC_FIELD_TEXT_COLOR_LABEL"
+                    default=""
+                    format="hex"
+                    validate="color"
+                    filter="string"
+                />
+                <field
+                    name="link_color"
+                    type="color"
+                    label="MOD_TOC_FIELD_LINK_COLOR_LABEL"
+                    default=""
+                    format="hex"
+                    validate="color"
+                    filter="string"
+                />
+                <field
+                    name="font_size"
+                    type="text"
+                    label="MOD_TOC_FIELD_FONT_SIZE_LABEL"
+                    description="MOD_TOC_FIELD_FONT_SIZE_DESC"
+                    default=""
+                    filter="string"
+                    hint="14px"
+                />
+                <field
+                    name="custom_class"
+                    type="text"
+                    label="MOD_TOC_FIELD_CUSTOM_CLASS_LABEL"
+                    description="MOD_TOC_FIELD_CUSTOM_CLASS_DESC"
+                    default=""
+                    filter="string"
+                    validate="CssIdentifier"
+                />
+                <!--
+                    filter="raw" is required here: CSS is not HTML and the
+                    default string filter would mangle valid declarations.
+                    The value is sanitised on every render in
+                    Bshumylo\Module\Toc\Site\Helper\TocHelper::getCustomCss(),
+                    which strips <, >, {, }, comments, at-rules and the
+                    legacy script-in-CSS vectors before it is echoed.
+                -->
+                <field
+                    name="custom_css"
+                    type="textarea"
+                    label="MOD_TOC_FIELD_CUSTOM_CSS_LABEL"
+                    description="MOD_TOC_FIELD_CUSTOM_CSS_DESC"
+                    default=""
+                    rows="6"
+                    filter="raw"
+                />
+            </fieldset>
+            <fieldset name="advanced" label="MOD_TOC_FIELDSET_ADVANCED">
+                <field
+                    name="content_selector"
+                    type="text"
+                    label="MOD_TOC_FIELD_SELECTOR_LABEL"
+                    description="MOD_TOC_FIELD_SELECTOR_DESC"
+                    default=".com-content-article__body, [itemprop='articleBody'], .item-page .article-content, .article-content, .uk-article [property='text']"
+                    filter="string"
+                />
+                <field
+                    name="layout"
+                    type="modulelayout"
+                    label="JFIELD_ALT_LAYOUT_LABEL"
+                    class="form-select"
+                    default="_:default"
+                    validate="moduleLayout"
+                />
+            </fieldset>
+        </fields>
+    </config>
+    <updateservers>
+        <server type="extension" priority="1" name="Table of Contents Module">https://raw.githubusercontent.com/bshumylo/Table-of-Contents-Module/main/update.xml</server>
+    </updateservers>
+</extension>

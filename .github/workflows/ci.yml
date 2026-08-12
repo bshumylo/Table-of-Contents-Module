@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer
+
+      - name: PHP syntax check
+        run: |
+          find src services tmpl tests -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Install test dependencies
+        run: composer require --dev --no-interaction phpunit/phpunit:^11 joomla/registry:^3
+
+      - name: Unit tests
+        run: vendor/bin/phpunit -c phpunit.xml.dist
+
+      - name: Build package
+        run: bash build/build.sh
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mod_toc
+          path: dist/*.zip
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build package
+        run: bash build/build.sh
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.zip
+          generate_release_notes: true

@@ -1,0 +1,108 @@
+.mod-toc {
+    --toc-bg: transparent;
+    --toc-border: #dee2e6;
+    --toc-text: inherit;
+    --toc-link: inherit;
+    --toc-width: 280px;
+    --toc-font-size: 0.9rem;
+
+    background: var(--toc-bg);
+    border: 1px solid var(--toc-border);
+    border-radius: 6px;
+    color: var(--toc-text);
+    font-size: var(--toc-font-size);
+    padding: 0.75em 1em;
+    box-sizing: border-box;
+}
+
+.mod-toc--top {
+    display: block;
+    width: 100%;
+    margin: 0 0 1.5em;
+}
+
+.mod-toc--left,
+.mod-toc--right {
+    width: var(--toc-width);
+    max-width: 100%;
+    margin-bottom: 1em;
+    position: sticky;
+    top: 1em;
+}
+
+.mod-toc--left {
+    float: left;
+    margin-right: 1.5em;
+}
+
+.mod-toc--right {
+    float: right;
+    margin-left: 1.5em;
+}
+
+.mod-toc__title {
+    margin: 0 0 0.5em;
+    font-weight: 600;
+    cursor: default;
+}
+
+.mod-toc__details > .mod-toc__title {
+    cursor: pointer;
+    margin: 0;
+    list-style: none;
+}
+
+.mod-toc__details > .mod-toc__title::-webkit-details-marker {
+    display: none;
+}
+
+.mod-toc__details > .mod-toc__title::before {
+    content: '\25B8';
+    display: inline-block;
+    margin-right: 0.4em;
+    transition: transform 0.15s ease;
+}
+
+.mod-toc__details[open] > .mod-toc__title::before {
+    transform: rotate(90deg);
+}
+
+.mod-toc__details > .mod-toc__nav {
+    margin-top: 0.5em;
+}
+
+.mod-toc__list {
+    margin: 0;
+    padding-left: 1.1em;
+    list-style: none;
+}
+
+ol.mod-toc__list {
+    list-style: decimal;
+}
+
+.mod-toc__item {
+    margin: 0.25em 0;
+}
+
+.mod-toc__link {
+    color: var(--toc-link);
+    text-decoration: none;
+}
+
+.mod-toc__link:hover,
+.mod-toc__link:focus {
+    text-decoration: underline;
+}
+
+@media (max-width: 782px) {
+    .mod-toc--left,
+    .mod-toc--right {
+        float: none;
+        width: 100%;
+        position: static;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 1.5em;
+    }
+}

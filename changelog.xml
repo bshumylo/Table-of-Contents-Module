@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelogs>
+    <changelog>
+        <element>mod_toc</element>
+        <type>module</type>
+        <version>1.0.0</version>
+        <addition>
+            <item>First public release: a site module that builds a table of contents from the headings of the article currently being viewed, entirely in the browser, with no external JavaScript or CSS dependencies.</item>
+            <item>Heading levels picked up are configurable (H2 to H6), and the module hides itself completely when the article contains fewer matching headings than the configured minimum.</item>
+            <item>Three placements independent of the assigned module position: at the top of the article, floating left of it, or floating right of it.</item>
+            <item>Optional numbered list, collapsible box (optionally collapsed on load), and smooth scrolling with a configurable scroll offset for sticky site headers.</item>
+            <item>Appearance settings for width, background, border, text and link colours, font size and a custom wrapper class, plus a per-instance Custom CSS field.</item>
+            <item>Adjustable article content CSS selector, with automatic detection of the article body when the selector matches nothing — this is what makes the module work on page builder layouts such as YOOtheme Pro, which emit no recognisable article markup.</item>
+            <item>Module chrome is recognised for templates that wrap modules in a card, a moduletable or a "module-&lt;id&gt;" element, so the whole box is moved next to the article; wrappers the moved or hidden module leaves empty are removed with it.</item>
+            <item>Ships English (en-GB) and Ukrainian (uk-UA) language files, and supports alternative module layouts.</item>
+        </addition>
+        <security>
+            <item>The Custom CSS parameter is stored unfiltered by design but is sanitised on every render before it is echoed: selector break-outs, braces, comments, at-rules and the legacy script-in-CSS vectors are stripped, so an operator with edit rights on the module cannot inject markup or script into the page.</item>
+        </security>
+        <note>
+            <item>Requires Joomla 6.0 or later and PHP 8.3 or later.</item>
+        </note>
+    </changelog>
+</changelogs>
