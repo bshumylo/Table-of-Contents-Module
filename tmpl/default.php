@@ -22,7 +22,7 @@ use Joomla\CMS\Language\Text;
  * @var  \Joomla\CMS\Application\CMSWebApplicationInterface  $app
  * @var  \Joomla\Registry\Registry                        $params
  * @var  array                                            $config        sanitised script options
- * @var  array                                            $presentation  sanitised class / style / custom CSS
+ * @var  array                                            $presentation  sanitised class / custom CSS
  */
 
 $title = trim((string) $params->get('title', ''));
@@ -50,7 +50,6 @@ $classes = 'mod-toc'
 <div
     id="<?php echo htmlspecialchars($config['id'], ENT_QUOTES, 'UTF-8'); ?>"
     class="<?php echo htmlspecialchars($classes, ENT_QUOTES, 'UTF-8'); ?>"
-    <?php if ($presentation['style'] !== '') : ?>style="<?php echo htmlspecialchars($presentation['style'], ENT_QUOTES, 'UTF-8'); ?>"<?php endif; ?>
 >
     <?php if ($config['collapsible']) : ?>
         <details class="mod-toc__details"<?php echo $config['collapsed'] ? '' : ' open'; ?>>

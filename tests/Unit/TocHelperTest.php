@@ -101,27 +101,38 @@ final class TocHelperTest extends TestCase
         $this->assertFalse($config['collapsible']);
     }
 
-    public function testValidStyleValuesArePassedThrough(): void
+    /**
+     * Colours, font size and width stopped being module params: the box is
+     * styled by the template and, on top of that, by the Custom CSS field.
+     * Values left in the saved params of an older module must not produce an
+     * inline style any more — the presentation carries no style at all.
+     */
+    public function testAppearanceParamsNoLongerProduceAnInlineStyle(): void
     {
         $presentation = $this->presentation([
+            'width'        => '320px',
             'font_size'    => '0.9rem',
             'bg_color'     => '#f8f9fa',
             'border_color' => '#DEE2E6',
+            'text_color'   => '#212529',
+            'link_color'   => '#0d6efd',
         ]);
 
-        $this->assertSame(
-            '--toc-font-size:0.9rem;--toc-bg:#f8f9fa;--toc-border:#DEE2E6',
-            $presentation['style']
-        );
+        $this->assertArrayNotHasKey('style', $presentation);
+        $this->assertSame(['class', 'customCss'], array_keys($presentation));
     }
 
     /**
-     * The module fills its template position, so a width left over in the
-     * saved params must not reach the style attribute any more.
+     * The custom properties advertised in the Custom CSS field description
+     * have to survive the sanitiser, or the documented way of restyling the
+     * module would not work.
      */
-    public function testWidthParamIsIgnored(): void
+    public function testDocumentedCustomPropertiesSurviveSanitising(): void
     {
-        $this->assertSame('', $this->presentation(['width' => '320px'])['style']);
+        $css = '--toc-bg: #f8f9fa;--toc-border: #dee2e6;--toc-text: #212529;'
+            . '--toc-link: #0d6efd;--toc-font-size: 0.9rem;';
+
+        $this->assertSame($css, $this->presentation(['custom_css' => $css])['customCss']);
     }
 
     public function testMultipleCustomClassesAreKept(): void
@@ -133,39 +144,27 @@ final class TocHelperTest extends TestCase
      * SEC-XSS-01 / SEC-XSS-02 — nothing injectable reaches the output
      * ---------------------------------------------------------------- */
 
-    #[DataProvider('hostileLengthProvider')]
-    public function testHostileLengthValuesAreDropped(string $value): void
+    /**
+     * Custom properties are the documented styling hook, so the sanitiser
+     * has to hold for hostile values written into one as well.
+     */
+    #[DataProvider('hostileCustomPropertyProvider')]
+    public function testHostileCustomPropertyValuesAreSanitised(string $value, array $mustNotContain): void
     {
-        $presentation = $this->presentation(['font_size' => $value]);
+        $css = $this->presentation(['custom_css' => '--toc-bg:' . $value])['customCss'];
 
-        $this->assertSame('', $presentation['style']);
+        foreach ($mustNotContain as $needle) {
+            $this->assertStringNotContainsStringIgnoringCase($needle, $css);
+        }
     }
 
-    public static function hostileLengthProvider(): array
+    public static function hostileCustomPropertyProvider(): array
     {
         return [
-            'declaration break-out' => ['280px;background:url(https://evil.example/x)'],
-            'attribute break-out'   => ['280px" onmouseover="alert(1)'],
-            'expression'            => ['expression(alert(1))'],
-            'url'                   => ['url(https://evil.example/x)'],
-            'markup'                => ['<script>alert(1)</script>'],
-        ];
-    }
-
-    #[DataProvider('hostileColorProvider')]
-    public function testHostileColourValuesAreDropped(string $value): void
-    {
-        $this->assertSame('', $this->presentation(['bg_color' => $value])['style']);
-    }
-
-    public static function hostileColorProvider(): array
-    {
-        return [
-            'declaration break-out' => ['#fff;background:url(https://evil.example/x)'],
-            'named colour'          => ['red'],
-            'function'              => ['rgb(1,2,3)'],
-            'markup'                => ['"><script>alert(1)</script>'],
-            'too short'             => ['#ff'],
+            'rule block escape' => ['#fff}body{display:none', ['}', '{']],
+            'expression'        => ['expression(alert(1))', ['expression(']],
+            'markup'            => ['<script>alert(1)</script>', ['<', '>']],
+            'javascript uri'    => ['url(javascript:alert(1))', ['javascript:']],
         ];
     }
 

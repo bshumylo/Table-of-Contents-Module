@@ -36,24 +36,6 @@ class TocHelper
     public const ALLOWED_LEVELS = ['h2', 'h3', 'h4', 'h5', 'h6'];
 
     /**
-     * A single CSS length: a number plus a known unit, or one of the
-     * keywords that make sense for a font size.
-     *
-     * @var    string
-     * @since  1.0.0
-     */
-    private const CSS_LENGTH = '/^(?:0|(?:auto|inherit|initial|unset)|-?\d{1,5}(?:\.\d{1,4})?(?:px|em|rem|ex|ch|%|vw|vh|vmin|vmax|pt|pc|cm|mm|in))$/';
-
-    /**
-     * A hexadecimal colour, matching what Joomla's own ColorRule accepts
-     * (plus the 4/8 digit variants with alpha).
-     *
-     * @var    string
-     * @since  1.0.0
-     */
-    private const CSS_COLOR = '/^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i';
-
-    /**
      * Upper bounds, so a stored param can never blow up the page size.
      *
      * @since  1.0.0
@@ -131,11 +113,16 @@ class TocHelper
 
     /**
      * Build the presentation values for the wrapper element: the extra CSS
-     * class, the inline custom properties and the sanitised custom CSS.
+     * class and the sanitised custom CSS.
+     *
+     * Colours and font size are not module params: the box inherits them
+     * from the template, and an operator who wants something else sets the
+     * custom properties (--toc-bg, --toc-border, --toc-text, --toc-link,
+     * --toc-font-size) in the Custom CSS field.
      *
      * @param   Registry  $params  The module params.
      *
-     * @return  array{class: string, style: string, customCss: string}
+     * @return  array{class: string, customCss: string}
      *
      * @since   1.0.0
      */
@@ -143,7 +130,6 @@ class TocHelper
     {
         return [
             'class'     => $this->getCustomClass($params),
-            'style'     => $this->getStyleVariables($params),
             'customCss' => $this->getCustomCss($params),
         ];
     }
@@ -183,51 +169,6 @@ class TocHelper
         }
 
         return implode(' ', array_unique($classes));
-    }
-
-    /**
-     * The inline custom properties for the wrapper. Only values that are a
-     * valid CSS length or hex colour are kept, so nothing arbitrary can be
-     * smuggled into the style attribute.
-     *
-     * @param   Registry  $params  The module params.
-     *
-     * @return  string
-     *
-     * @since   1.0.0
-     */
-    private function getStyleVariables(Registry $params): string
-    {
-        $lengths = [
-            '--toc-font-size' => 'font_size',
-        ];
-
-        $colors = [
-            '--toc-bg'     => 'bg_color',
-            '--toc-border' => 'border_color',
-            '--toc-text'   => 'text_color',
-            '--toc-link'   => 'link_color',
-        ];
-
-        $declarations = [];
-
-        foreach ($lengths as $property => $param) {
-            $value = strtolower(trim((string) $params->get($param, '')));
-
-            if ($value !== '' && preg_match(self::CSS_LENGTH, $value)) {
-                $declarations[] = $property . ':' . $value;
-            }
-        }
-
-        foreach ($colors as $property => $param) {
-            $value = trim((string) $params->get($param, ''));
-
-            if ($value !== '' && preg_match(self::CSS_COLOR, $value)) {
-                $declarations[] = $property . ':' . $value;
-            }
-        }
-
-        return implode(';', $declarations);
     }
 
     /**

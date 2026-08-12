@@ -4,6 +4,21 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-08-12
+
+### Changed
+
+- **Appearance follows the template.** The *Background colour*, *Border colour*, *Text colour*, *Link colour* and *Font size* parameters are gone. The box inherits background, text colour, link colour and font size from the template around it, so it fits a light and a dark design without being configured; only the border keeps a neutral grey fallback so the box stays outlined. The module no longer writes an inline `style` attribute at all.
+- **Custom CSS is now the documented styling hook.** The field's description lists the custom properties the module reads — `--toc-bg`, `--toc-border`, `--toc-text`, `--toc-link`, `--toc-font-size` — and the field itself carries a placeholder showing them in place, so the replacement for the removed colour pickers is visible where it is needed. A note at the top of the *Appearance* tab says where the styling comes from.
+
+### Removed
+
+- `bg_color`, `border_color`, `text_color`, `link_color` and `font_size` module parameters and their language strings, together with the inline style the module used to emit. Values already saved for existing modules are ignored, so nothing has to be cleaned up before updating.
+
+### Note
+
+- A module whose colours were set through the removed pickers now takes the template's colours instead. To keep the old look, paste the corresponding custom properties into Custom CSS.
+
 ## [1.1.0] - 2026-08-12
 
 ### Changed
