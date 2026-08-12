@@ -4,6 +4,24 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-08-12
+
+### Fixed
+
+- Raw `MOD_TOC_XML_DESCRIPTION` instead of the module description in the administrator. The key lived only in `mod_toc.sys.ini`, but the module edit page prints the manifest description after `ModuleModel` has loaded `mod_toc.ini` alone — the `.sys` file is never read there. The key is now in both files for both languages, which is what core Joomla modules do.
+- The heading stayed visible with **Show Title** set to *Hide*. The module rendered a heading of its own from a `title` parameter that duplicated the module title, so Joomla's setting could not reach it. The parameter is gone and the module prints no heading at all: the title and its visibility belong to the *Module* tab and to the template chrome.
+- The border survived every update and cache purge because it was never a setting: `.mod-toc` carried a hard-coded `1px solid` border, a background, padding and rounded corners. The module now draws no box of its own — `--toc-bg`, `--toc-border`, `--toc-padding` and `--toc-radius` all default to nothing, so the template's own module styling is what shows.
+- `build/build.ps1` produced a zip whose entry names used backslashes, so a package built on Windows unpacked on a Linux server as files literally named `language\en-GB\mod_toc.ini` — no language folder, hence untranslated strings everywhere. The Windows build now writes the entries with forward slashes, like `build/build.sh` always did.
+
+### Changed
+
+- `--toc-border` takes a full border shorthand (`1px solid #dee2e6`) rather than a colour, and `--toc-radius` and `--toc-padding` join the documented custom properties, so a box can be restored from Custom CSS in one place.
+- The collapse toggle is now `.mod-toc__toggle` and carries the module title as screen-reader-only text instead of a visible `.mod-toc__title` heading. Template overrides and custom CSS targeting `.mod-toc__title` need updating.
+
+### Removed
+
+- The `title` module parameter and its language strings; a note in the *Basic* tab explains that the heading comes from the module title.
+
 ## [1.2.0] - 2026-08-12
 
 ### Changed

@@ -19,13 +19,21 @@ use Joomla\CMS\Language\Text;
  * so there is no $this here — only the variables extracted from the data
  * returned by Dispatcher::getLayoutData().
  *
+ * @var  \stdClass                                        $module
  * @var  \Joomla\CMS\Application\CMSWebApplicationInterface  $app
  * @var  \Joomla\Registry\Registry                        $params
  * @var  array                                            $config        sanitised script options
  * @var  array                                            $presentation  sanitised class / custom CSS
  */
 
-$title = trim((string) $params->get('title', ''));
+/*
+ * The module never prints a heading of its own: the title and whether it is
+ * shown at all belong to Joomla (Module Title / Show Title), and the
+ * template chrome renders it. The title text is still needed here as the
+ * accessible name of the navigation and of the collapse toggle, which is
+ * why it is read but never echoed as visible text.
+ */
+$title = trim((string) ($module->title ?? ''));
 $title = $title !== '' ? $title : Text::_('MOD_TOC_DEFAULT_TITLE');
 
 $document = $app->getDocument();
@@ -53,11 +61,12 @@ $classes = 'mod-toc'
 >
     <?php if ($config['collapsible']) : ?>
         <details class="mod-toc__details"<?php echo $config['collapsed'] ? '' : ' open'; ?>>
-            <summary class="mod-toc__title"><?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?></summary>
+            <summary class="mod-toc__toggle">
+                <span class="mod-toc__sr-only"><?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?></span>
+            </summary>
             <nav class="mod-toc__nav" aria-label="<?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?>"></nav>
         </details>
     <?php else : ?>
-        <p class="mod-toc__title"><?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?></p>
         <nav class="mod-toc__nav" aria-label="<?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?>"></nav>
     <?php endif; ?>
 </div>

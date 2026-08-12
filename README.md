@@ -34,7 +34,6 @@ The module renders only on `com_content` article views; on any other page it pro
 
 | Option | Default | Description |
 | --- | --- | --- |
-| Title | *(empty)* | Heading above the list. Empty = the default title. |
 | Heading levels | H2, H3, H4 | Which heading tags are picked up. |
 | Minimum headings to show | 2 | The module hides itself when the article has fewer matching headings. |
 | Numbered list | No | Numbers the entries instead of plain links. |
@@ -43,9 +42,11 @@ The module renders only on `com_content` article views; on any other page it pro
 | Smooth scrolling | Yes | Animated jump to the heading. |
 | Scroll offset (px) | 20 | Vertical offset applied when jumping, for sticky headers. |
 
+The heading above the list is the **module title** from the *Module* tab, rendered by the template chrome like any other module's. Setting **Show Title** to *Hide* leaves the box without a heading; the collapse toggle stays as a marker, and the title is still used as the accessible name of the navigation.
+
 ### Appearance
 
-Colours and font size are not module parameters: the box takes the background, the text colour, the link colour and the font size of the template around it, so it matches a light and a dark design without being configured. Only the border falls back to a neutral grey, so the box stays outlined either way.
+The module brings no box of its own: no background, no border, no padding, no rounding, and text, links and font size are inherited. Whatever the template wraps a module in — a Cassiopeia card, a YOOtheme panel — is what the reader sees, on a light and on a dark design alike.
 
 | Option | Default | Description |
 | --- | --- | --- |
@@ -56,11 +57,15 @@ To restyle a single module, set the module's own custom properties in **Custom C
 
 ```css
 --toc-bg: #f8f9fa;
---toc-border: #dee2e6;
+--toc-border: 1px solid #dee2e6;
+--toc-radius: 6px;
+--toc-padding: 0.75em 1em;
 --toc-text: #212529;
 --toc-link: #0d6efd;
 --toc-font-size: 0.9rem;
 ```
+
+`--toc-border` takes a full border shorthand, so `1px solid #dee2e6` is a border and `0` is none.
 
 Any other declaration works too — `border-radius: 12px;`, `padding: 1.5em;` and so on. The declarations are scoped to this module instance (`#mod-toc-<id>`), so nothing leaks into the rest of the page; selectors, braces and at-rules are stripped on render, see the security note below. For site-wide styling use the template's own CSS and target `.mod-toc`.
 

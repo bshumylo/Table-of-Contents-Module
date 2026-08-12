@@ -1,27 +1,31 @@
 .mod-toc {
     /*
-     * The box takes its colours and its font size from the template: the
-     * background and the text, the links and the size are whatever the
-     * surrounding page uses, and only the border falls back to a neutral
-     * grey at low opacity, so the box stays outlined on a light and on a
-     * dark template alike.
+     * The module brings no box of its own: no background, no border, no
+     * padding, no rounding, and text, links and font size are inherited.
+     * Whatever the template puts around a module — a Cassiopeia card, a
+     * YOOtheme panel — is what the reader sees, on a light and on a dark
+     * design alike.
      *
-     * These are the hooks the Custom CSS field is meant for — setting
-     * --toc-bg, --toc-border, --toc-text, --toc-link or --toc-font-size
-     * there restyles this module instance only.
+     * These are the hooks the Custom CSS field is meant for. Setting
+     * --toc-bg, --toc-border, --toc-text, --toc-link, --toc-font-size,
+     * --toc-padding or --toc-radius there restyles this module instance
+     * only; --toc-border takes a full border shorthand, for example
+     * `--toc-border: 1px solid #dee2e6;`.
      */
     --toc-bg: transparent;
-    --toc-border: rgba(128, 128, 128, 0.4);
+    --toc-border: 0;
     --toc-text: inherit;
     --toc-link: inherit;
     --toc-font-size: inherit;
+    --toc-padding: 0;
+    --toc-radius: 0;
 
     background: var(--toc-bg);
-    border: 1px solid var(--toc-border);
-    border-radius: 6px;
+    border: var(--toc-border);
+    border-radius: var(--toc-radius);
     color: var(--toc-text);
     font-size: var(--toc-font-size);
-    padding: 0.75em 1em;
+    padding: var(--toc-padding);
     box-sizing: border-box;
 
     /*
@@ -39,35 +43,46 @@
     min-width: 0;
 }
 
-.mod-toc__title {
-    margin: 0 0 0.5em;
-    font-weight: 600;
-    cursor: default;
-}
-
-.mod-toc__details > .mod-toc__title {
+/*
+ * The collapse toggle. The module title is Joomla's business — it is
+ * rendered by the template chrome when Show Title is on and by nobody when
+ * it is off — so the toggle carries only the marker and an accessible name
+ * for screen readers.
+ */
+.mod-toc__toggle {
     cursor: pointer;
-    margin: 0;
     list-style: none;
+    display: block;
 }
 
-.mod-toc__details > .mod-toc__title::-webkit-details-marker {
+.mod-toc__toggle::-webkit-details-marker {
     display: none;
 }
 
-.mod-toc__details > .mod-toc__title::before {
+.mod-toc__toggle::before {
     content: '\25B8';
     display: inline-block;
-    margin-right: 0.4em;
     transition: transform 0.15s ease;
 }
 
-.mod-toc__details[open] > .mod-toc__title::before {
+.mod-toc__details[open] > .mod-toc__toggle::before {
     transform: rotate(90deg);
 }
 
 .mod-toc__details > .mod-toc__nav {
     margin-top: 0.5em;
+}
+
+.mod-toc__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 .mod-toc__list {
