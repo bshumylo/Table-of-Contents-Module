@@ -3,6 +3,27 @@
     <changelog>
         <element>mod_toc</element>
         <type>module</type>
+        <version>1.3.0</version>
+        <fix>
+            <item>The administrator showed the raw string MOD_TOC_XML_DESCRIPTION instead of the module description. The key was only in the .sys language file, while the module edit page prints the manifest description after loading the ordinary language file. It is now in both files, in English and in Ukrainian.</item>
+            <item>The heading stayed visible when Show Title was set to Hide. The module printed a heading of its own from a Title parameter that duplicated the module title, so the Joomla setting could not switch it off. The parameter is gone and the module prints no heading: the title and its visibility belong to the Module tab and to the template.</item>
+            <item>The box kept its border after updating and clearing every cache, because the border was never a setting but a hard-coded style, along with a background, padding and rounded corners. The module now draws no box of its own, so the styling of the template shows through.</item>
+            <item>The Windows build script produced a package whose entries used backslashes, which unpacks on a Linux server as files named "language\en-GB\mod_toc.ini" instead of a language folder, leaving every string untranslated. Only self-built packages were affected; the released ones are built on Linux.</item>
+        </fix>
+        <change>
+            <item>The custom property --toc-border now takes a full border shorthand such as "1px solid #dee2e6", and --toc-radius and --toc-padding were added, so a box can be restored from the Custom CSS field.</item>
+            <item>The collapse toggle is now .mod-toc__toggle and carries the module title as screen reader text; template overrides or custom CSS that target .mod-toc__title need updating.</item>
+        </change>
+        <remove>
+            <item>The "title" parameter and its language strings. The heading is the module title from the Module tab.</item>
+        </remove>
+        <note>
+            <item>Requires Joomla 6.0 or later and PHP 8.3 or later.</item>
+        </note>
+    </changelog>
+    <changelog>
+        <element>mod_toc</element>
+        <type>module</type>
         <version>1.2.0</version>
         <change>
             <item>The appearance now follows the template. The background, border, text and link colour parameters and the font size parameter have been removed: the box inherits those from the template around it, so it fits a light and a dark design without being configured, and only the border keeps a neutral grey fallback. The module no longer writes an inline style attribute.</item>
