@@ -36,16 +36,8 @@ class TocHelper
     public const ALLOWED_LEVELS = ['h2', 'h3', 'h4', 'h5', 'h6'];
 
     /**
-     * Placements the module knows how to render.
-     *
-     * @var    string[]
-     * @since  1.0.0
-     */
-    public const ALLOWED_POSITIONS = ['top', 'left', 'right'];
-
-    /**
      * A single CSS length: a number plus a known unit, or one of the
-     * keywords that make sense for a width / font size.
+     * keywords that make sense for a font size.
      *
      * @var    string
      * @since  1.0.0
@@ -118,12 +110,6 @@ class TocHelper
             $levels = ['h2', 'h3', 'h4'];
         }
 
-        $position = (string) $params->get('position', 'right');
-
-        if (!\in_array($position, self::ALLOWED_POSITIONS, true)) {
-            $position = 'right';
-        }
-
         $selector = trim((string) $params->get('content_selector', self::DEFAULT_SELECTOR));
 
         if ($selector === '' || \strlen($selector) > self::MAX_SELECTOR_LENGTH) {
@@ -134,7 +120,6 @@ class TocHelper
             'id'           => 'mod-toc-' . $moduleId,
             'selector'     => $selector,
             'levels'       => $levels,
-            'position'     => $position,
             'minItems'     => min(100, max(1, (int) $params->get('min_items', 2))),
             'numbered'     => (bool) (int) $params->get('numbered', 0),
             'collapsible'  => (bool) (int) $params->get('collapsible', 1),
@@ -214,7 +199,6 @@ class TocHelper
     private function getStyleVariables(Registry $params): string
     {
         $lengths = [
-            '--toc-width'     => 'width',
             '--toc-font-size' => 'font_size',
         ];
 

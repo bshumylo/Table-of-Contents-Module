@@ -44,7 +44,7 @@ if ($presentation['customCss'] !== '') {
     );
 }
 
-$classes = 'mod-toc mod-toc--' . $config['position']
+$classes = 'mod-toc'
     . ($presentation['class'] !== '' ? ' ' . $presentation['class'] : '');
 ?>
 <div

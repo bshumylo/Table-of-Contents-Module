@@ -8,9 +8,9 @@ A native Joomla! 6 site module that automatically builds a **table of contents**
 
 - Table of contents built client-side from the article's own headings, so it always matches what the reader actually sees.
 - Configurable heading levels (`H2`–`H6`) and a minimum number of headings below which the module hides itself completely — including its chrome.
-- Three placements independent of the assigned module position: at the top of the article, floating to its left, or floating to its right.
+- Rendered in the template position it is assigned to, which it fills — placement is Joomla's own module position, and the box carries no width of its own, so it fits a sidebar, a builder column or a flex container alike.
 - Optional numbered list, collapsible box (optionally collapsed on load), and smooth scrolling with a configurable offset for sticky site headers.
-- Appearance options: width, background, border, text and link colours, font size, extra CSS class, and a per-instance Custom CSS field.
+- Appearance options: background, border, text and link colours, font size, extra CSS class, and a per-instance Custom CSS field.
 - Adjustable article-content CSS selector for templates that do not use standard Joomla article markup.
 - No external dependencies and no remote requests — plain Joomla web assets (DI service provider, module dispatcher, overridable layout).
 - Ships with `en-GB` and `uk-UA` translations.
@@ -35,7 +35,6 @@ The module renders only on `com_content` article views; on any other page it pro
 | Option | Default | Description |
 | --- | --- | --- |
 | Title | *(empty)* | Heading above the list. Empty = the default title. |
-| Position | Floating, right of the article | `At the top of the article`, `Floating, left`, `Floating, right` — independent of the module position. |
 | Heading levels | H2, H3, H4 | Which heading tags are picked up. |
 | Minimum headings to show | 2 | The module hides itself when the article has fewer matching headings. |
 | Numbered list | No | Numbers the entries instead of plain links. |
@@ -48,9 +47,8 @@ The module renders only on `com_content` article views; on any other page it pro
 
 | Option | Default | Description |
 | --- | --- | --- |
-| Width | `280px` | Box width for the Left / Right positions. |
-| Background colour | `#f8f9fa` | Box background. |
-| Border colour | `#dee2e6` | Box border. |
+| Background colour | *(empty)* | Box background; the template's own background when empty. |
+| Border colour | *(empty)* | Box border; a neutral grey when empty. |
 | Text colour | *(empty)* | Inherited from the template when empty. |
 | Link colour | *(empty)* | Inherited from the template when empty. |
 | Font size | *(empty)* | e.g. `14px` or `0.9rem`; inherited when empty. |
@@ -66,12 +64,13 @@ The module renders only on `com_content` article views; on any other page it pro
 
 If the selector matches nothing usable, the module finds the article body on its own: it walks up from the first heading that is not part of the site header, footer, navigation, sidebar or another module, and stops at the first ancestor holding enough headings. Headings belonging to the page rather than the article — a related-posts block, for instance — are never picked up.
 
+### Placement and width
+
+The table of contents is rendered where Joomla put it: pick the template position in the module's own **Position** setting, the same way as for every other module. The box has no width of its own — it fills the position it sits in (`width: 100%`, plus `flex: 1 1 auto` and `min-width: 0` so it behaves inside a flex or grid container), so a sidebar position gives a narrow column and a full-width position a full-width box. Size it from the position, from the template, or from the module's **Custom CSS** field.
+
 ### Page builders (YOOtheme Pro)
 
-On a YOOtheme Pro builder layout the article body has no stable CSS hook, so the automatic detection above is what places the table of contents. Two things are worth knowing:
-
-- YOOtheme Pro does not render the `sidebar` position on builder pages. Assign the module to `top` or `bottom` instead — the module moves itself next to the article anyway, and the now-empty position section is removed from the page.
-- The module keeps its YOOtheme panel wrapper (`module-<id>`) when it moves, so the position's styling follows it.
+On a YOOtheme Pro builder layout the article body has no stable CSS hook, so the automatic detection above is what finds the headings. The module itself stays in the position or Builder element it was placed in, and the panel wrapper YOOtheme renders around it (`module-<id>`, `uk-panel`) keeps its styling. Since YOOtheme Pro does not render the `sidebar` position on builder pages, place the module with a Builder *Module* element in the column you want it in.
 
 ### Template override
 

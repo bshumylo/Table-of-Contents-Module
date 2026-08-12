@@ -107,7 +107,7 @@ const TOC_NOT_CONTENT = 'header, footer, nav, aside, .mod-toc, ' + TOC_CHROME;
  * we know — YOOtheme Pro's Builder module element renders a bare
  * `<div class="uk-panel">` holding the module title and the module. Only
  * accepted when the parent holds nothing but this module, its title and the
- * noscript fallback, so a shared position wrapper is never swallowed.
+ * noscript fallback, so a shared position wrapper is never removed.
  */
 function tocImplicitWrapper(container) {
   const parent = container.parentElement;
@@ -126,10 +126,10 @@ function tocImplicitWrapper(container) {
 }
 
 /**
- * The element that should be moved next to the article: the module chrome
- * wrapper if the template rendered one, otherwise the module markup itself.
- * Moving only the inner element would leave an empty card — or an orphaned
- * module title — behind.
+ * The element that stands for the whole module on the page: the module
+ * chrome wrapper if the template rendered one, otherwise the module markup
+ * itself. Removing only the inner element would leave an empty card — or an
+ * orphaned module title — behind.
  */
 function tocMovableElement(container) {
   const wrapper = container.closest(TOC_CHROME);
@@ -198,7 +198,7 @@ function tocDetectArticle(levels, minItems, movable) {
 }
 
 /**
- * Drop the wrappers the moved module left behind. A template position is
+ * Drop the wrappers the removed module left behind. A template position is
  * often a section plus a container plus the module chrome, all of which
  * would otherwise stay on the page as empty boxes with their own spacing.
  */
@@ -322,35 +322,8 @@ function tocInit(container, config) {
     });
   }
 
-  const origin = movable.parentElement;
-
-  // When a chrome wrapper travels with the module it becomes the floating
-  // box: floating the inner element instead would leave the wrapper as a
-  // full width block, and the article text would start below it rather than
-  // wrap around it.
-  if (movable !== container) {
-    movable.classList.add('mod-toc-holder', 'mod-toc-holder--' + config.position);
-    container.classList.add('mod-toc--in-holder');
-
-    // Custom properties inherit downwards only, so the width the template
-    // wrote onto the module has to be repeated on the wrapper.
-    const width = container.style.getPropertyValue('--toc-width');
-
-    if (width) {
-      movable.style.setProperty('--toc-width', width);
-    }
-  }
-
-  if (config.position === 'top') {
-    article.insertBefore(movable, article.firstChild);
-  } else {
-    article.parentNode.insertBefore(movable, article);
-  }
-
-  if (origin) {
-    tocPruneEmpty(origin);
-  }
-
+  // The module stays where Joomla rendered it: placement is the template
+  // position's job, not the module's.
   container.classList.add('mod-toc--ready');
 }
 

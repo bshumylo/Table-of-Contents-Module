@@ -6,7 +6,7 @@
     <creationDate>2026-08-12</creationDate>
     <copyright>(C) 2026 Bohdan Shumylo</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-    <version>1.0.3</version>
+    <version>1.1.0</version>
     <description>MOD_TOC_XML_DESCRIPTION</description>
     <changelogurl>https://raw.githubusercontent.com/bshumylo/Table-of-Contents-Module/main/changelog.xml</changelogurl>
     <namespace path="src">Bshumylo\Module\Toc</namespace>
@@ -32,18 +32,6 @@
                     default=""
                     filter="string"
                 />
-                <field
-                    name="position"
-                    type="list"
-                    label="MOD_TOC_FIELD_POSITION_LABEL"
-                    description="MOD_TOC_FIELD_POSITION_DESC"
-                    default="right"
-                    validate="options"
-                >
-                    <option value="top">MOD_TOC_FIELD_POSITION_TOP</option>
-                    <option value="left">MOD_TOC_FIELD_POSITION_LEFT</option>
-                    <option value="right">MOD_TOC_FIELD_POSITION_RIGHT</option>
-                </field>
                 <field
                     name="levels"
                     type="checkboxes"
@@ -131,15 +119,6 @@
                 />
             </fieldset>
             <fieldset name="appearance" label="MOD_TOC_FIELDSET_APPEARANCE">
-                <field
-                    name="width"
-                    type="text"
-                    label="MOD_TOC_FIELD_WIDTH_LABEL"
-                    description="MOD_TOC_FIELD_WIDTH_DESC"
-                    default="280px"
-                    filter="string"
-                    hint="280px"
-                />
                 <field
                     name="bg_color"
                     type="color"
