@@ -4,6 +4,14 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2026-08-12
+
+### Fixed
+
+- Unreadable box on dark templates. `bg_color` defaulted to the near-white `#f8f9fa` while text and link colours are inherited from the template, so a dark template put light text on a light box. `bg_color` and `border_color` now default to empty: the box takes the template's own background, and the border falls back to a neutral `rgba(128,128,128,0.4)` that stays visible on light and dark alike. Joomla substitutes a field's manifest default whenever the value is cleared, so this could not be fixed from the module's own settings — the default itself had to change.
+- Existing module instances keep the colours already saved for them; clear the Background and Border colour fields to adopt the new behaviour.
+- Orphaned module title when the module moved out of a wrapper the chrome selectors did not recognise. YOOtheme Pro's Builder *Module* element renders a bare `<div class="uk-panel">` holding the title and the module, so the title stayed behind in the layout column. A parent is now treated as the module's own wrapper when it holds nothing but this module, its title and the `noscript` fallback — tight enough that a position wrapper shared with other modules is never swallowed.
+
 ## [1.0.0] - 2026-08-12
 
 ### Added

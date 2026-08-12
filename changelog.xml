@@ -3,6 +3,18 @@
     <changelog>
         <element>mod_toc</element>
         <type>module</type>
+        <version>1.0.3</version>
+        <fix>
+            <item>The box was unreadable on a dark template: the background colour defaulted to a near white value while the text and link colours are inherited from the template, so light text landed on a light box. Background and border colours now default to empty, which makes the box take the template's own background and gives it a neutral grey border that stays visible either way. Existing modules keep whatever colours were saved for them; clear the two colour fields to pick up the new behaviour.</item>
+            <item>The module title was left behind when the module moved out of a wrapper the chrome selectors did not recognise, such as the bare panel that the YOOtheme Pro Builder module element renders. A parent now counts as the module's own wrapper when it holds nothing but this module, its title and the noscript fallback.</item>
+        </fix>
+        <note>
+            <item>Requires Joomla 6.0 or later and PHP 8.3 or later.</item>
+        </note>
+    </changelog>
+    <changelog>
+        <element>mod_toc</element>
+        <type>module</type>
         <version>1.0.0</version>
         <addition>
             <item>First public release: a site module that builds a table of contents from the headings of the article currently being viewed, entirely in the browser, with no external JavaScript or CSS dependencies.</item>
